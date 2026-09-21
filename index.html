@@ -23,20 +23,2385 @@
     @keyframes ambient{to{transform:scale(1.12) translate3d(-2%,2%,0)}}@keyframes streak{from{transform:translateX(0) rotate(-19deg)}to{transform:translateX(310vw) rotate(-19deg)}}@keyframes float-a{50%{transform:translateY(-22px) rotate(7deg) scale(1.04)}}@keyframes float-b{50%{transform:translateY(19px) rotate(-7deg) scale(.96)}}@keyframes card-in{from{opacity:0;transform:scale(.95) translateY(20px)}to{opacity:1;transform:none}}@keyframes sweep{18%,100%{transform:translateX(120%)}}@keyframes avatar-pulse{50%{box-shadow:0 0 28px var(--bright),0 0 58px rgba(255,0,60,.56)}}@keyframes element-in{from{opacity:0;transform:translateY(14px);filter:blur(4px)}to{opacity:1;transform:none;filter:none}}@keyframes button-in{to{opacity:1;transform:none}}@keyframes crystal-shine{35%,100%{transform:translateX(120%)}}@keyframes glitch{0%,89%,100%{transform:none}91%{transform:translate(2px,-1px)}93%{transform:translate(-2px,1px)}95%{transform:translate(1px,1px)}}@keyframes robot-idle{50%{transform:translateY(-9px) rotate(2deg)}}@keyframes propeller{to{transform:translateX(-50%) rotateY(360deg)}}@keyframes beam{to{transform:scaleY(1.25);opacity:.45}}@keyframes blink{0%,96%,98%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}
     @media (max-width:680px){.floating{width:clamp(4rem,20vw,5.4rem);opacity:.7}.floating--ae{top:1.3rem;right:.4rem}.floating--am{bottom:1.2rem;left:.35rem}.profile-card{backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}}@media (max-width:380px){:root{--robot-size:54px}.profile-card{padding-inline:1rem}.link-button{grid-template-columns:3rem minmax(0,1fr) 1rem;min-height:4.12rem}.button-icon,.button-icon-wrap{width:2.48rem;height:2.48rem}.button-copy small{font-size:.7rem}}@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
     @media (min-width:681px){main{padding-block:clamp(1rem,3vw,2rem)}.profile-card{padding-top:clamp(1.35rem,4vw,1.9rem);padding-bottom:clamp(1.4rem,4vw,1.85rem)}}
+  
+  /* Settings Button Styling */
+#settings-toggle {
+  position: fixed;
+  bottom: 15px; /* Moved from top to bottom */
+  right: 15px;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--accent);
+  color: #fff;
+  font-size: 1.5rem;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+#settings-toggle:hover {
+  transform: rotate(90deg);
+  background: rgba(255, 23, 68, 0.3);
+}
+
+/* Lite Mode Overrides */
+body.lite-mode #particle-canvas,
+body.lite-mode #card-canvas,
+body.lite-mode .energy,
+body.lite-mode .floating,
+body.lite-mode #vortx-robot,
+body.lite-mode .background::before,
+body.lite-mode .background::after {
+  display: none !important;
+}
+
+/* Remove expensive blurs and animations in Lite Mode */
+body.lite-mode .profile-card {
+  animation: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: rgba(15, 5, 8, 0.98) !important; /* Solid fallback background */
+}
+body.lite-mode * {
+  animation-duration: 0.01ms !important; /* Kills all remaining CSS animations */
+}
   </style>
 </head>
 <body>
   <div class="background" aria-hidden="true"></div><canvas id="particle-canvas" aria-hidden="true"></canvas><div class="energy energy--one" aria-hidden="true"></div><div class="energy energy--two" aria-hidden="true"></div><div id="flash" aria-hidden="true"></div>
   <figure class="floating floating--ae" aria-hidden="true"><img src="ae.png" alt=""></figure><figure class="floating floating--am" aria-hidden="true"><img src="am.png" alt=""></figure>
-  <aside id="vortx-robot" class="robot-position" role="img" tabindex="0" aria-label="Draggable RAVI LIVE cyber robot"><div class="robot-mesh"><div class="robot-propeller"></div><div class="robot-body"></div><div class="robot-eyes"><span class="robot-eye"></span><span class="robot-eye"></span></div><div class="robot-beam"></div></div></aside>
+  <aside id="vortx-robot" class="robot-position" role="img" tabindex="0" aria-label="Draggable RAVI LIVE cyber robot"><div class="robot-mesh"><div class="robot-propeller"></div><div class="robot-body"></div><div class="robot-eyes"><span class="robot-eye"></span><span class="robot-eye"></span></div><div class="robot-beam"></div></div></aside><button id="settings-toggle" aria-label="Toggle Effects" title="Toggle Lite Mode">⚙️</button>
   <main><section class="profile-card" aria-labelledby="vortx-title"><canvas id="card-canvas" aria-hidden="true"></canvas><span class="corner corner--tl" aria-hidden="true"></span><span class="corner corner--br" aria-hidden="true"></span><div class="avatar-wrap"><img class="avatar" src="lg.png" alt="RAVI LIVE creator artwork"></div><h1 id="vortx-title" class="logo-wrap"><img class="logo" src="vr.png" alt="VORTX"></h1><p class="identity">Mr. <span>Ravi</span> Live</p><p class="tagline">Motion edits, creator content, and premium EliteMotion XML resources.</p><p class="crystal">Master your motion</p>
     <nav class="links" aria-label="RAVI LIVE social links"><a class="link-button" href="https://www.tiktok.com/@mr.ravi.live.only1?_r=1&_t=ZS-99uwOIrxNEG" target="_blank" rel="noopener noreferrer" aria-label="Open RAVI LIVE on TikTok in a new tab"><span class="button-icon-wrap"><img class="button-icon" src="tik.png" alt=""></span><span class="button-copy"><strong>TikTok</strong><small>Short-form creator edits</small></span><span class="button-arrow" aria-hidden="true">↗</span></a><a class="link-button" href="https://youtube.com/@mr.ravi.live1?si=YS8JQug12vjXk6cU" target="_blank" rel="noopener noreferrer" aria-label="Open RAVI Live on YouTube in a new tab"><span class="button-icon-wrap"><img class="button-icon" src="1782242330467.png" alt=""></span><span class="button-copy"><strong>YouTube</strong><small>Watch the latest visual work</small></span><span class="button-arrow" aria-hidden="true">↗</span></a><a class="link-button" href="https://whatsapp.com/channel/0029VbDZMhXDeON5AGySlu0A" target="_blank" rel="noopener noreferrer" aria-label="Open RAVI LiVE on WHATSAPP (Channel) in a new tab"><span class="button-icon-wrap"><img class="button-icon" src="ins.png" alt=""></span><span class="button-copy"><strong>Whatsapp Channel</strong><small>Behind the visuals</small></span><span class="button-arrow" aria-hidden="true">↗</span></a><a id="whatsapp-group" class="link-button link-button--elite" href="https://chat.whatsapp.com/CU9n2iZgGIFAbc75vWQhMG" target="_blank" rel="noopener noreferrer" aria-label="Join the EliteMotion XML WhatsApp group in a new tab"><span class="button-icon-wrap"><img class="button-icon" src="am.png" alt="EliteMotion"></span><span class="button-copy"><strong>EliteMotion XML</strong><small>Join WhatsApp Group</small></span><span class="button-arrow" aria-hidden="true">↗</span></a></nav>
     <p class="visitor"><span class="visitor-dot"></span> STATUS <span id="visitor-count"></span></p><span id="visitor-status" aria-live="polite"></span>
   </section></main>
+  
+
   <script>
-    (()=>{'use strict';const WHATSAPP_GROUP_URL='https://chat.whatsapp.com/CU9n2iZgGIFAbc75vWQhMG';const counterEndpoint='https://api.counterapi.dev/v1/vortx_official_page/total_visits/up';const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;const canvas=document.querySelector('#particle-canvas'),ctx=canvas.getContext('2d'),cardCanvas=document.querySelector('#card-canvas'),cardCtx=cardCanvas.getContext('2d');let width=0,height=0,dpr=1,particles=[],cardDots=[];const mouse={x:-9999,y:-9999,active:false};function particle(){const depth=.42+Math.random()*.88;return{x:Math.random()*width,y:Math.random()*height,vx:(Math.random()-.5)*.45*depth,vy:(Math.random()-.5)*.42*depth,r:(.65+Math.random()*1.85)*depth,a:.3+Math.random()*.5,depth};}function resizeParticles(){dpr=Math.min(devicePixelRatio||1,2);width=innerWidth;height=innerHeight;canvas.width=Math.floor(width*dpr);canvas.height=Math.floor(height*dpr);canvas.style.width=`${width}px`;canvas.style.height=`${height}px`;ctx.setTransform(dpr,0,0,dpr,0,0);particles=Array.from({length:reduced?0:width<600?48:width<950?76:126},particle);}function animateParticles(){ctx.clearRect(0,0,width,height);particles.forEach((p,i)=>{if(mouse.active){const dx=p.x-mouse.x,dy=p.y-mouse.y,dist=Math.hypot(dx,dy);if(dist<160&&dist>1){p.vx+=dx/dist*.011;p.vy+=dy/dist*.011;}}p.x+=p.vx;p.y+=p.vy;p.vx*=.997;p.vy*=.997;if(p.x<-10)p.x=width+10;if(p.x>width+10)p.x=-10;if(p.y<-10)p.y=height+10;if(p.y>height+10)p.y=-10;ctx.beginPath();ctx.fillStyle=`rgba(255,30,65,${p.a})`;ctx.shadowColor='#ff003c';ctx.shadowBlur=13*p.depth;ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();for(let j=i+1;j<particles.length;j++){const q=particles[j],dx=p.x-q.x,dy=p.y-q.y,dd=dx*dx+dy*dy;if(dd<13200){ctx.beginPath();ctx.lineWidth=.65;ctx.shadowBlur=3;ctx.strokeStyle=`rgba(255,22,62,${(1-dd/13200)*.29})`;ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();}}});ctx.shadowBlur=0;requestAnimationFrame(animateParticles);}function resizeCard(){const r=cardCanvas.getBoundingClientRect(),ratio=Math.min(devicePixelRatio||1,2);cardCanvas.width=Math.floor(r.width*ratio);cardCanvas.height=Math.floor(r.height*ratio);cardCtx.setTransform(ratio,0,0,ratio,0,0);cardDots=Array.from({length:reduced?0:17},()=>({x:Math.random()*r.width,y:Math.random()*r.height,vx:(Math.random()-.5)*.22,vy:(Math.random()-.5)*.22}));}function animateCard(){const r=cardCanvas.getBoundingClientRect();cardCtx.clearRect(0,0,r.width,r.height);cardDots.forEach((p,i)=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>r.width)p.vx*=-1;if(p.y<0||p.y>r.height)p.vy*=-1;for(let j=i+1;j<cardDots.length;j++){const q=cardDots[j],dx=p.x-q.x,dy=p.y-q.y,dd=dx*dx+dy*dy;if(dd<6000){cardCtx.beginPath();cardCtx.strokeStyle=`rgba(255,37,69,${(1-dd/6000)*.18})`;cardCtx.lineWidth=.5;cardCtx.moveTo(p.x,p.y);cardCtx.lineTo(q.x,q.y);cardCtx.stroke();}}cardCtx.beginPath();cardCtx.fillStyle='rgba(255,60,84,.42)';cardCtx.arc(p.x,p.y,1.1,0,Math.PI*2);cardCtx.fill();});requestAnimationFrame(animateCard);}resizeParticles();resizeCard();if(!reduced){animateParticles();animateCard();}if(matchMedia('(pointer:fine)').matches){addEventListener('pointermove',e=>{mouse.x=e.clientX;mouse.y=e.clientY;mouse.active=true},{passive:true});addEventListener('pointerleave',()=>mouse.active=false,{passive:true});}
-      const robot=document.querySelector('#vortx-robot'),compact=matchMedia('(max-width:600px)').matches;let robotX=compact?Math.max(0,innerWidth-66):Math.max(10,innerWidth-86),robotY=compact?6:Math.max(80,innerHeight-100),drag=null;function clampRobot(){const r=robot.getBoundingClientRect();robotX=Math.min(Math.max(0,robotX),Math.max(0,innerWidth-r.width));robotY=Math.min(Math.max(0,robotY),Math.max(0,innerHeight-r.height));robot.style.left=`${robotX}px`;robot.style.top=`${robotY}px`;}clampRobot();addEventListener('resize',()=>{resizeParticles();resizeCard();clampRobot()},{passive:true});robot.addEventListener('pointerdown',e=>{if(e.button!==undefined&&e.button!==0)return;const r=robot.getBoundingClientRect();drag={id:e.pointerId,offsetX:e.clientX-r.left,offsetY:e.clientY-r.top};robot.setPointerCapture(e.pointerId);robot.classList.add('is-dragging');e.preventDefault();});robot.addEventListener('pointermove',e=>{if(!drag||drag.id!==e.pointerId)return;robotX=e.clientX-drag.offsetX;robotY=e.clientY-drag.offsetY;clampRobot();e.preventDefault();});function endDrag(e){if(!drag||drag.id!==e.pointerId)return;if(robot.hasPointerCapture(e.pointerId))robot.releasePointerCapture(e.pointerId);drag=null;robot.classList.remove('is-dragging');}robot.addEventListener('pointerup',endDrag);robot.addEventListener('pointercancel',endDrag);robot.addEventListener('keydown',e=>{const step=e.shiftKey?24:12;if(e.key==='ArrowLeft')robotX-=step;else if(e.key==='ArrowRight')robotX+=step;else if(e.key==='ArrowUp')robotY-=step;else if(e.key==='ArrowDown')robotY+=step;else return;e.preventDefault();clampRobot();});
-      const whatsapp=document.querySelector('#whatsapp-group');if(/^https?:\/\//.test(WHATSAPP_GROUP_URL))whatsapp.href=WHATSAPP_GROUP_URL;else whatsapp.addEventListener('click',e=>{e.preventDefault();document.querySelector('#visitor-status').textContent='WhatsApp group link coming soon';});async function visitors(){const count=document.querySelector('#visitor-count'),status=document.querySelector('#visitor-status'),key='vortx-visitor-count',saved=localStorage.getItem(key);if(saved)count.textContent=saved;try{const response=await fetch(counterEndpoint,{signal:AbortSignal.timeout(5000)});if(!response.ok)throw Error();const data=await response.json(),total=data.count??data.value;if(!Number.isFinite(total))throw Error();const result=new Intl.NumberFormat().format(total);count.textContent=result;localStorage.setItem(key,result);}catch{if(!saved)count.textContent='—';status.textContent=saved?'Showing last saved count':'Stay Connected !';}}visitors();document.addEventListener('click',e=>{if(e.target.closest('a,#vortx-robot'))return;const flash=document.querySelector('#flash');flash.style.setProperty('--flash-x',`${e.clientX}px`);flash.style.setProperty('--flash-y',`${e.clientY}px`);flash.style.opacity='1';setTimeout(()=>flash.style.opacity='0',130);});})();
-  </script>
+(() => {
+  'use strict';
+
+  /* =========================================================
+     RAVI LIVE EFFECTS / MESH PARTICLE SYSTEM
+     ========================================================= */
+
+  const WHATSAPP_GROUP_URL =
+    'https://chat.whatsapp.com/CU9n2iZgGIFAbc75vWQhMG';
+
+  const counterEndpoint =
+    'https://api.counterapi.dev/v1/vortx_official_page/total_visits/up';
+
+  const reduced =
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------------------------------------------------------
+     DOM
+     --------------------------------------------------------- */
+
+  const canvas =
+    document.querySelector('#particle-canvas');
+
+  const ctx =
+    canvas ? canvas.getContext('2d') : null;
+
+  const cardCanvas =
+    document.querySelector('#card-canvas');
+
+  const cardCtx =
+    cardCanvas ? cardCanvas.getContext('2d') : null;
+
+  const settingsBtn =
+    document.querySelector('#settings-toggle');
+
+  const background =
+    document.querySelector('.background');
+
+  const flash =
+    document.querySelector('#flash');
+
+  const energyElements =
+    document.querySelectorAll('.energy');
+
+  /* ---------------------------------------------------------
+     Make the background layers visible
+     --------------------------------------------------------- */
+
+  if (background) {
+    background.style.zIndex = '0';
+  }
+
+  if (canvas) {
+    canvas.style.zIndex = '1';
+  }
+
+  energyElements.forEach(el => {
+    el.style.zIndex = '1';
+  });
+
+  /* ---------------------------------------------------------
+     Settings storage
+     --------------------------------------------------------- */
+
+  const STORAGE_KEY =
+    'vortx-effects-settings-v3';
+
+const DEFAULT_SETTINGS = {
+  backgroundParticles: false,
+  backgroundDensity: 180,
+
+  cardParticles: false,
+
+  energyStreaks: false,
+
+  floatingGraphics: true,
+
+  robot: true,
+
+  ambientGlow: false,
+
+  uiAnimations: true
+};
+
+  let settings = {
+    ...DEFAULT_SETTINGS
+  };
+
+  try {
+    const saved =
+      localStorage.getItem(STORAGE_KEY);
+
+    if (saved) {
+      const parsed =
+        JSON.parse(saved);
+
+      if (
+        parsed &&
+        typeof parsed === 'object'
+      ) {
+        settings = {
+          ...DEFAULT_SETTINGS,
+          ...parsed
+        };
+      }
+    }
+  } catch {
+    settings = {
+      ...DEFAULT_SETTINGS
+    };
+  }
+
+  /* Safety limits for stored density */
+
+  settings.backgroundDensity =
+    Math.max(
+      40,
+      Math.min(
+        300,
+        Number(settings.backgroundDensity) || 180
+      )
+    );
+
+  function saveSettings() {
+    try {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(settings)
+      );
+    } catch {
+      /* Storage unavailable - page still works */
+    }
+  }
+
+  /* ---------------------------------------------------------
+     Canvas state
+     --------------------------------------------------------- */
+
+  let width = 0;
+  let height = 0;
+  let dpr = 1;
+
+  let particles = [];
+  let cardDots = [];
+
+  let particleFrame = null;
+  let cardFrame = null;
+
+  /* ---------------------------------------------------------
+     Mouse interaction
+     --------------------------------------------------------- */
+
+  const mouse = {
+    x: -9999,
+    y: -9999,
+    active: false
+  };
+
+  /* ---------------------------------------------------------
+     Mesh particle creation
+     --------------------------------------------------------- */
+
+  function createParticle() {
+    const depth =
+      0.45 + Math.random() * 0.85;
+
+    return {
+      x: Math.random() * width,
+      y: Math.random() * height,
+
+      vx:
+        (Math.random() - 0.5) *
+        0.30 *
+        depth,
+
+      vy:
+        (Math.random() - 0.5) *
+        0.27 *
+        depth,
+
+      radius:
+        (0.7 + Math.random() * 1.45) *
+        depth,
+
+      alpha:
+        0.28 +
+        Math.random() * 0.5,
+
+      depth,
+
+      pulse:
+        Math.random() * Math.PI * 2
+    };
+  }
+
+  /* ---------------------------------------------------------
+     Create mesh
+     --------------------------------------------------------- */
+
+  function rebuildParticles() {
+    if (
+      !canvas ||
+      !ctx ||
+      reduced ||
+      !settings.backgroundParticles
+    ) {
+      particles = [];
+      return;
+    }
+
+    particles =
+      Array.from(
+        {
+          length:
+            Math.round(
+              settings.backgroundDensity
+            )
+        },
+        createParticle
+      );
+  }
+
+  /* ---------------------------------------------------------
+     Resize background canvas
+     --------------------------------------------------------- */
+
+  function resizeParticles() {
+    if (!canvas || !ctx) {
+      return;
+    }
+
+    dpr =
+      Math.min(
+        window.devicePixelRatio || 1,
+        2
+      );
+
+    width =
+      window.innerWidth;
+
+    height =
+      window.innerHeight;
+
+    canvas.width =
+      Math.floor(
+        width * dpr
+      );
+
+    canvas.height =
+      Math.floor(
+        height * dpr
+      );
+
+    canvas.style.width =
+      `${width}px`;
+
+    canvas.style.height =
+      `${height}px`;
+
+    ctx.setTransform(
+      dpr,
+      0,
+      0,
+      dpr,
+      0,
+      0
+    );
+
+    rebuildParticles();
+  }
+
+  /* ---------------------------------------------------------
+     Mesh animation
+     --------------------------------------------------------- */
+
+  function animateParticles() {
+    if (
+      reduced ||
+      !settings.backgroundParticles ||
+      !canvas ||
+      !ctx
+    ) {
+      particleFrame = null;
+      return;
+    }
+
+    ctx.clearRect(
+      0,
+      0,
+      width,
+      height
+    );
+
+    const connectionDistance =
+      width >= 1500
+        ? 185
+        : width >= 1000
+        ? 165
+        : 145;
+
+    const connectionDistanceSquared =
+      connectionDistance *
+      connectionDistance;
+
+    /* ---------------------------------------------
+       Move particles
+       --------------------------------------------- */
+
+    particles.forEach(p => {
+      if (mouse.active) {
+        const dx =
+          p.x - mouse.x;
+
+        const dy =
+          p.y - mouse.y;
+
+        const distance =
+          Math.hypot(
+            dx,
+            dy
+          );
+
+        if (
+          distance < 180 &&
+          distance > 1
+        ) {
+          const force =
+            (1 - distance / 180) *
+            0.010;
+
+          p.vx +=
+            (dx / distance) *
+            force;
+
+          p.vy +=
+            (dy / distance) *
+            force;
+        }
+      }
+
+      p.x += p.vx;
+      p.y += p.vy;
+
+      p.vx *= 0.999;
+      p.vy *= 0.999;
+
+      /* Keep movement alive */
+
+      if (
+        Math.abs(p.vx) < 0.012
+      ) {
+        p.vx +=
+          (Math.random() - 0.5) *
+          0.002;
+      }
+
+      if (
+        Math.abs(p.vy) < 0.012
+      ) {
+        p.vy +=
+          (Math.random() - 0.5) *
+          0.002;
+      }
+
+      /* Screen wrapping */
+
+      if (p.x < -20) {
+        p.x = width + 20;
+      }
+
+      if (p.x > width + 20) {
+        p.x = -20;
+      }
+
+      if (p.y < -20) {
+        p.y = height + 20;
+      }
+
+      if (p.y > height + 20) {
+        p.y = -20;
+      }
+
+      p.pulse += 0.018;
+    });
+
+    /* ---------------------------------------------
+       Draw mesh connections first
+       --------------------------------------------- */
+
+    for (
+      let i = 0;
+      i < particles.length;
+      i++
+    ) {
+      const p =
+        particles[i];
+
+      for (
+        let j = i + 1;
+        j < particles.length;
+        j++
+      ) {
+        const q =
+          particles[j];
+
+        const dx =
+          p.x - q.x;
+
+        const dy =
+          p.y - q.y;
+
+        const distanceSquared =
+          dx * dx +
+          dy * dy;
+
+        if (
+          distanceSquared <
+          connectionDistanceSquared
+        ) {
+          const distance =
+            Math.sqrt(
+              distanceSquared
+            );
+
+          const strength =
+            1 -
+            distance /
+              connectionDistance;
+
+          ctx.beginPath();
+
+          ctx.lineWidth =
+            0.35 +
+            strength * 0.45;
+
+          ctx.strokeStyle =
+            `rgba(255,28,66,${
+              strength * 0.27
+            })`;
+
+          ctx.moveTo(
+            p.x,
+            p.y
+          );
+
+          ctx.lineTo(
+            q.x,
+            q.y
+          );
+
+          ctx.stroke();
+        }
+      }
+    }
+
+    /* ---------------------------------------------
+       Draw particles
+       --------------------------------------------- */
+
+    particles.forEach(p => {
+      const pulse =
+        1 +
+        Math.sin(p.pulse) *
+        0.15;
+
+      ctx.beginPath();
+
+      ctx.fillStyle =
+        `rgba(255,32,68,${p.alpha})`;
+
+      ctx.shadowColor =
+        '#ff003c';
+
+      ctx.shadowBlur =
+        8 * p.depth;
+
+      ctx.arc(
+        p.x,
+        p.y,
+        p.radius * pulse,
+        0,
+        Math.PI * 2
+      );
+
+      ctx.fill();
+    });
+
+    ctx.shadowBlur = 0;
+
+    particleFrame =
+      requestAnimationFrame(
+        animateParticles
+      );
+  }
+
+  function startParticleAnimation() {
+    if (
+      reduced ||
+      !settings.backgroundParticles ||
+      particleFrame !== null
+    ) {
+      return;
+    }
+
+    particleFrame =
+      requestAnimationFrame(
+        animateParticles
+      );
+  }
+
+  function stopParticleAnimation() {
+    if (
+      particleFrame !== null
+    ) {
+      cancelAnimationFrame(
+        particleFrame
+      );
+
+      particleFrame = null;
+    }
+
+    particles = [];
+
+    if (ctx) {
+      ctx.clearRect(
+        0,
+        0,
+        width,
+        height
+      );
+    }
+  }
+
+  /* ---------------------------------------------------------
+     Card mesh particles
+     --------------------------------------------------------- */
+
+  function resizeCard() {
+    if (
+      !cardCanvas ||
+      !cardCtx
+    ) {
+      return;
+    }
+
+    const rect =
+      cardCanvas.getBoundingClientRect();
+
+    const ratio =
+      Math.min(
+        window.devicePixelRatio || 1,
+        2
+      );
+
+    cardCanvas.width =
+      Math.floor(
+        rect.width * ratio
+      );
+
+    cardCanvas.height =
+      Math.floor(
+        rect.height * ratio
+      );
+
+    cardCtx.setTransform(
+      ratio,
+      0,
+      0,
+      ratio,
+      0,
+      0
+    );
+
+    if (
+      reduced ||
+      !settings.cardParticles
+    ) {
+      cardDots = [];
+
+      cardCtx.clearRect(
+        0,
+        0,
+        rect.width,
+        rect.height
+      );
+
+      return;
+    }
+
+    cardDots =
+      Array.from(
+        {
+          length: 17
+        },
+        () => ({
+          x:
+            Math.random() *
+            rect.width,
+
+          y:
+            Math.random() *
+            rect.height,
+
+          vx:
+            (Math.random() - 0.5) *
+            0.22,
+
+          vy:
+            (Math.random() - 0.5) *
+            0.22
+        })
+      );
+  }
+
+  function animateCard() {
+    if (
+      reduced ||
+      !settings.cardParticles ||
+      !cardCanvas ||
+      !cardCtx
+    ) {
+      cardFrame = null;
+      return;
+    }
+
+    const rect =
+      cardCanvas.getBoundingClientRect();
+
+    cardCtx.clearRect(
+      0,
+      0,
+      rect.width,
+      rect.height
+    );
+
+    cardDots.forEach(
+      (p, i) => {
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (
+          p.x < 0 ||
+          p.x > rect.width
+        ) {
+          p.vx *= -1;
+        }
+
+        if (
+          p.y < 0 ||
+          p.y > rect.height
+        ) {
+          p.vy *= -1;
+        }
+
+        for (
+          let j = i + 1;
+          j < cardDots.length;
+          j++
+        ) {
+          const q =
+            cardDots[j];
+
+          const dx =
+            p.x - q.x;
+
+          const dy =
+            p.y - q.y;
+
+          const distanceSquared =
+            dx * dx +
+            dy * dy;
+
+          if (
+            distanceSquared <
+            6000
+          ) {
+            cardCtx.beginPath();
+
+            cardCtx.strokeStyle =
+              `rgba(255,37,69,${
+                (
+                  1 -
+                  distanceSquared /
+                    6000
+                ) * 0.18
+              })`;
+
+            cardCtx.lineWidth =
+              0.5;
+
+            cardCtx.moveTo(
+              p.x,
+              p.y
+            );
+
+            cardCtx.lineTo(
+              q.x,
+              q.y
+            );
+
+            cardCtx.stroke();
+          }
+        }
+
+        cardCtx.beginPath();
+
+        cardCtx.fillStyle =
+          'rgba(255,60,84,.42)';
+
+        cardCtx.arc(
+          p.x,
+          p.y,
+          1.1,
+          0,
+          Math.PI * 2
+        );
+
+        cardCtx.fill();
+      }
+    );
+
+    cardFrame =
+      requestAnimationFrame(
+        animateCard
+      );
+  }
+
+  function startCardAnimation() {
+    if (
+      reduced ||
+      !settings.cardParticles ||
+      cardFrame !== null
+    ) {
+      return;
+    }
+
+    cardFrame =
+      requestAnimationFrame(
+        animateCard
+      );
+  }
+
+  function stopCardAnimation() {
+    if (
+      cardFrame !== null
+    ) {
+      cancelAnimationFrame(
+        cardFrame
+      );
+
+      cardFrame = null;
+    }
+
+    cardDots = [];
+
+    if (
+      cardCtx &&
+      cardCanvas
+    ) {
+      const rect =
+        cardCanvas.getBoundingClientRect();
+
+      cardCtx.clearRect(
+        0,
+        0,
+        rect.width,
+        rect.height
+      );
+    }
+  }
+
+  /* ---------------------------------------------------------
+     Effect CSS
+     --------------------------------------------------------- */
+
+  const effectStyle =
+    document.createElement(
+      'style'
+    );
+
+  effectStyle.id =
+    'vortx-effects-controller-style';
+
+  effectStyle.textContent = `
+
+    #particle-canvas {
+      position: fixed !important;
+      inset: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      z-index: 1 !important;
+      pointer-events: none !important;
+    }
+
+    .background {
+      z-index: 0 !important;
+    }
+
+    .energy {
+      z-index: 1 !important;
+    }
+
+    body.vortx-no-energy .energy {
+      display: none !important;
+    }
+
+    body.vortx-no-floating .floating {
+      display: none !important;
+    }
+
+    body.vortx-no-robot #vortx-robot {
+      display: none !important;
+    }
+
+    body.vortx-no-ambient .background::before,
+    body.vortx-no-ambient .background::after {
+      display: none !important;
+    }
+
+    body.vortx-no-ui-animations
+      .profile-card,
+    body.vortx-no-ui-animations
+      .profile-card::before,
+    body.vortx-no-ui-animations
+      .avatar-wrap,
+    body.vortx-no-ui-animations
+      .logo-wrap,
+    body.vortx-no-ui-animations
+      .logo,
+    body.vortx-no-ui-animations
+      .identity,
+    body.vortx-no-ui-animations
+      .tagline,
+    body.vortx-no-ui-animations
+      .crystal,
+    body.vortx-no-ui-animations
+      .crystal::before,
+    body.vortx-no-ui-animations
+      .link-button,
+    body.vortx-no-ui-animations
+      .robot-mesh,
+    body.vortx-no-ui-animations
+      .robot-eye,
+    body.vortx-no-ui-animations
+      .robot-propeller,
+    body.vortx-no-ui-animations
+      .robot-beam {
+      animation: none !important;
+    }
+
+    /* =====================================================
+       SETTINGS PANEL
+       ===================================================== */
+
+    #vortx-effects-panel {
+      position: fixed;
+      right: 15px;
+      bottom: 70px;
+
+      z-index: 999;
+
+      width:
+        min(
+          350px,
+          calc(100vw - 30px)
+        );
+
+      max-height:
+        min(
+          80vh,
+          600px
+        );
+
+      overflow-y: auto;
+
+      padding: 17px;
+
+      border:
+        1px solid
+        rgba(255,23,68,.45);
+
+      border-radius: 18px;
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(35,5,11,.98),
+          rgba(8,2,5,.99)
+        );
+
+      box-shadow:
+        0 18px 50px
+        rgba(0,0,0,.65),
+
+        0 0 30px
+        rgba(255,0,60,.18),
+
+        inset 0 1px
+        rgba(255,255,255,.08);
+
+      backdrop-filter:
+        blur(16px);
+
+      -webkit-backdrop-filter:
+        blur(16px);
+
+      color: #fff;
+
+      font-family:
+        Tajawal,
+        system-ui,
+        sans-serif;
+
+      opacity: 0;
+
+      transform:
+        translateY(10px)
+        scale(.97);
+
+      pointer-events: none;
+
+      visibility: hidden;
+
+      transition:
+        opacity .22s ease,
+        transform .22s ease,
+        visibility .22s ease;
+    }
+
+    #vortx-effects-panel.is-open {
+      opacity: 1;
+
+      transform:
+        translateY(0)
+        scale(1);
+
+      pointer-events: auto;
+
+      visibility: visible;
+    }
+
+    .vortx-effects-header {
+      display: flex;
+
+      align-items: center;
+
+      justify-content:
+        space-between;
+
+      gap: 12px;
+
+      margin-bottom: 13px;
+    }
+
+    .vortx-effects-title {
+      margin: 0;
+
+      font:
+        900 1rem/1.1
+        Montserrat,
+        sans-serif;
+
+      letter-spacing: .08em;
+
+      text-transform:
+        uppercase;
+    }
+
+    .vortx-effects-subtitle {
+      margin:
+        4px 0 0;
+
+      color:
+        rgba(255,255,255,.55);
+
+      font-size:
+        .72rem;
+    }
+
+    .vortx-effects-reset {
+      border:
+        1px solid
+        rgba(255,255,255,.14);
+
+      border-radius: 9px;
+
+      background:
+        rgba(255,255,255,.05);
+
+      color:
+        rgba(255,255,255,.8);
+
+      padding:
+        6px 8px;
+
+      font:
+        700 .62rem/1
+        Montserrat,
+        sans-serif;
+
+      cursor: pointer;
+
+      transition:
+        .2s ease;
+    }
+
+    .vortx-effects-reset:hover {
+      border-color:
+        rgba(255,23,68,.7);
+
+      background:
+        rgba(255,23,68,.12);
+
+      color: #fff;
+    }
+
+    .vortx-effect-row {
+      display: flex;
+
+      align-items: center;
+
+      justify-content:
+        space-between;
+
+      gap: 14px;
+
+      min-height: 54px;
+
+      padding:
+        9px 0;
+
+      border-top:
+        1px solid
+        rgba(255,255,255,.07);
+    }
+
+    .vortx-effect-copy {
+      min-width: 0;
+    }
+
+    .vortx-effect-name {
+      display: block;
+
+      font:
+        800 .82rem/1.15
+        Montserrat,
+        sans-serif;
+    }
+
+    .vortx-effect-description {
+      display: block;
+
+      margin-top: 4px;
+
+      color:
+        rgba(255,255,255,.48);
+
+      font-size:
+        .68rem;
+
+      line-height: 1.3;
+    }
+
+    /* =====================================================
+       SWITCH
+       ===================================================== */
+
+    .vortx-switch {
+      position: relative;
+
+      flex:
+        0 0 auto;
+
+      width: 48px;
+      height: 27px;
+
+      border: 0;
+
+      padding: 0;
+
+      border-radius:
+        999px;
+
+      background:
+        rgba(255,255,255,.12);
+
+      box-shadow:
+        inset 0 1px 3px
+        rgba(0,0,0,.35);
+
+      cursor: pointer;
+
+      transition:
+        background .2s ease,
+        box-shadow .2s ease;
+    }
+
+    .vortx-switch::after {
+      content: "";
+
+      position: absolute;
+
+      top: 3px;
+      left: 3px;
+
+      width: 21px;
+      height: 21px;
+
+      border-radius: 50%;
+
+      background: #fff;
+
+      box-shadow:
+        0 2px 5px
+        rgba(0,0,0,.4);
+
+      transition:
+        transform .2s ease;
+    }
+
+    .vortx-switch.is-on {
+      background:
+        #ff1744;
+
+      box-shadow:
+        0 0 12px
+        rgba(255,23,68,.35),
+
+        inset 0 1px
+        rgba(255,255,255,.2);
+    }
+
+    .vortx-switch.is-on::after {
+      transform:
+        translateX(21px);
+    }
+
+    .vortx-switch:focus-visible {
+      outline:
+        2px solid #fff;
+
+      outline-offset:
+        3px;
+    }
+
+    /* =====================================================
+       DENSITY SLIDER
+       ===================================================== */
+
+    .vortx-density {
+      padding:
+        4px 0 11px;
+    }
+
+    .vortx-density-top {
+      display: flex;
+
+      align-items: center;
+
+      justify-content:
+        space-between;
+
+      margin-bottom: 7px;
+    }
+
+    .vortx-density-label {
+      font:
+        800 .76rem/1.1
+        Montserrat,
+        sans-serif;
+
+      color:
+        rgba(255,255,255,.85);
+    }
+
+    .vortx-density-value {
+      min-width: 42px;
+
+      text-align: right;
+
+      color:
+        #ff4a6b;
+
+      font:
+        800 .72rem/1
+        Montserrat,
+        sans-serif;
+    }
+
+    .vortx-density-range {
+      width: 100%;
+
+      height: 5px;
+
+      appearance: none;
+      -webkit-appearance: none;
+
+      border-radius:
+        999px;
+
+      outline: none;
+
+      background:
+        rgba(255,255,255,.11);
+
+      cursor: pointer;
+    }
+
+    .vortx-density-range::-webkit-slider-thumb {
+      appearance: none;
+      -webkit-appearance: none;
+
+      width: 17px;
+      height: 17px;
+
+      border-radius: 50%;
+
+      border:
+        2px solid #fff;
+
+      background:
+        #ff1744;
+
+      box-shadow:
+        0 0 10px
+        rgba(255,23,68,.6);
+
+      cursor: pointer;
+    }
+
+    .vortx-density-range::-moz-range-thumb {
+      width: 14px;
+      height: 14px;
+
+      border-radius: 50%;
+
+      border:
+        2px solid #fff;
+
+      background:
+        #ff1744;
+
+      box-shadow:
+        0 0 10px
+        rgba(255,23,68,.6);
+
+      cursor: pointer;
+    }
+
+    .vortx-density-hint {
+      display: flex;
+
+      justify-content:
+        space-between;
+
+      margin-top: 5px;
+
+      color:
+        rgba(255,255,255,.35);
+
+      font-size:
+        .58rem;
+    }
+
+    #settings-toggle {
+      z-index: 1000 !important;
+    }
+
+    @media (max-width: 480px) {
+      #vortx-effects-panel {
+        right: 10px;
+        bottom: 65px;
+
+        width:
+          calc(100vw - 20px);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #vortx-effects-panel,
+      .vortx-switch,
+      .vortx-switch::after {
+        transition: none !important;
+      }
+    }
+  `;
+
+  document.head.appendChild(
+    effectStyle
+  );
+
+  /* ---------------------------------------------------------
+     Build settings panel
+     --------------------------------------------------------- */
+
+  let effectsPanel =
+    document.querySelector(
+      '#vortx-effects-panel'
+    );
+
+  if (!effectsPanel) {
+    effectsPanel =
+      document.createElement(
+        'aside'
+      );
+
+    effectsPanel.id =
+      'vortx-effects-panel';
+
+    effectsPanel.setAttribute(
+      'aria-label',
+      'RAVI LIVE visual effects settings'
+    );
+
+    effectsPanel.innerHTML = `
+      <div class="vortx-effects-header">
+
+        <div>
+          <h2 class="vortx-effects-title">
+            Effects
+          </h2>
+
+          <p class="vortx-effects-subtitle">
+            Customize the visual experience
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="vortx-effects-reset"
+          id="vortx-effects-reset"
+        >
+          RESET
+        </button>
+
+      </div>
+
+      <div
+        class="vortx-effect-row"
+        id="vortx-background-row"
+      >
+        <div class="vortx-effect-copy">
+
+          <span class="vortx-effect-name">
+            Mesh Particles
+          </span>
+
+          <span class="vortx-effect-description">
+            Floating particles and connecting network lines
+          </span>
+
+        </div>
+
+        <button
+          type="button"
+          class="vortx-switch"
+          data-effect="backgroundParticles"
+          role="switch"
+          aria-label="Mesh Particles"
+        ></button>
+      </div>
+
+      <div class="vortx-density">
+
+        <div class="vortx-density-top">
+
+          <span class="vortx-density-label">
+            Mesh Density
+          </span>
+
+          <span
+            class="vortx-density-value"
+            id="vortx-density-value"
+          >
+            180
+          </span>
+
+        </div>
+
+        <input
+          id="vortx-density-range"
+          class="vortx-density-range"
+          type="range"
+          min="40"
+          max="300"
+          step="10"
+          value="180"
+          aria-label="Mesh particle density"
+        >
+
+        <div class="vortx-density-hint">
+          <span>LESS</span>
+          <span>MORE</span>
+        </div>
+
+      </div>
+
+      <div class="vortx-effect-row">
+
+        <div class="vortx-effect-copy">
+
+          <span class="vortx-effect-name">
+            Card Particles
+          </span>
+
+          <span class="vortx-effect-description">
+            Small network effect inside the profile card
+          </span>
+
+        </div>
+
+        <button
+          type="button"
+          class="vortx-switch"
+          data-effect="cardParticles"
+          role="switch"
+          aria-label="Card Particles"
+        ></button>
+
+      </div>
+
+      <div class="vortx-effect-row">
+
+        <div class="vortx-effect-copy">
+
+          <span class="vortx-effect-name">
+            Energy Streaks
+          </span>
+
+          <span class="vortx-effect-description">
+            Fast flying red light rods
+          </span>
+
+        </div>
+
+        <button
+          type="button"
+          class="vortx-switch"
+          data-effect="energyStreaks"
+          role="switch"
+          aria-label="Energy Streaks"
+        ></button>
+
+      </div>
+
+      <div class="vortx-effect-row">
+
+        <div class="vortx-effect-copy">
+
+          <span class="vortx-effect-name">
+            Floating Graphics
+          </span>
+
+          <span class="vortx-effect-description">
+            Floating AE and EliteMotion artwork
+          </span>
+
+        </div>
+
+        <button
+          type="button"
+          class="vortx-switch"
+          data-effect="floatingGraphics"
+          role="switch"
+          aria-label="Floating Graphics"
+        ></button>
+
+      </div>
+
+      <div class="vortx-effect-row">
+
+        <div class="vortx-effect-copy">
+
+          <span class="vortx-effect-name">
+            Cyber Robot
+          </span>
+
+          <span class="vortx-effect-description">
+            Draggable flying RAVI LIVE robot
+          </span>
+
+        </div>
+
+        <button
+          type="button"
+          class="vortx-switch"
+          data-effect="robot"
+          role="switch"
+          aria-label="Cyber Robot"
+        ></button>
+
+      </div>
+
+      <div class="vortx-effect-row">
+
+        <div class="vortx-effect-copy">
+
+          <span class="vortx-effect-name">
+            Ambient Glow
+          </span>
+
+          <span class="vortx-effect-description">
+            Large red glow and atmospheric background
+          </span>
+
+        </div>
+
+        <button
+          type="button"
+          class="vortx-switch"
+          data-effect="ambientGlow"
+          role="switch"
+          aria-label="Ambient Glow"
+        ></button>
+
+      </div>
+
+      <div class="vortx-effect-row">
+
+        <div class="vortx-effect-copy">
+
+          <span class="vortx-effect-name">
+            UI Animations
+          </span>
+
+          <span class="vortx-effect-description">
+            Logo, card, buttons and decorative animations
+          </span>
+
+        </div>
+
+        <button
+          type="button"
+          class="vortx-switch"
+          data-effect="uiAnimations"
+          role="switch"
+          aria-label="UI Animations"
+        ></button>
+
+      </div>
+    `;
+
+    document.body.appendChild(
+      effectsPanel
+    );
+  }
+
+  /* ---------------------------------------------------------
+     Settings controls
+     --------------------------------------------------------- */
+
+  const resetButton =
+    effectsPanel.querySelector(
+      '#vortx-effects-reset'
+    );
+
+  const densityRange =
+    effectsPanel.querySelector(
+      '#vortx-density-range'
+    );
+
+  const densityValue =
+    effectsPanel.querySelector(
+      '#vortx-density-value'
+    );
+
+  /* ---------------------------------------------------------
+     Apply visual classes
+     --------------------------------------------------------- */
+
+  function applyVisualSettings() {
+    document.body.classList.toggle(
+      'vortx-no-energy',
+      !settings.energyStreaks
+    );
+
+    document.body.classList.toggle(
+      'vortx-no-floating',
+      !settings.floatingGraphics
+    );
+
+    document.body.classList.toggle(
+      'vortx-no-robot',
+      !settings.robot
+    );
+
+    document.body.classList.toggle(
+      'vortx-no-ambient',
+      !settings.ambientGlow
+    );
+
+    document.body.classList.toggle(
+      'vortx-no-ui-animations',
+      !settings.uiAnimations
+    );
+  }
+
+  /* ---------------------------------------------------------
+     Update switches
+     --------------------------------------------------------- */
+
+  function updateSwitches() {
+    const switches =
+      effectsPanel.querySelectorAll(
+        '.vortx-switch'
+      );
+
+    switches.forEach(button => {
+      const key =
+        button.dataset.effect;
+
+      if (!key) {
+        return;
+      }
+
+      const enabled =
+        !!settings[key];
+
+      button.classList.toggle(
+        'is-on',
+        enabled
+      );
+
+      button.setAttribute(
+        'aria-checked',
+        enabled
+          ? 'true'
+          : 'false'
+      );
+
+      button.title =
+        enabled
+          ? `Turn off ${key}`
+          : `Turn on ${key}`;
+    });
+
+    densityRange.value =
+      String(
+        settings.backgroundDensity
+      );
+
+    densityValue.textContent =
+      String(
+        settings.backgroundDensity
+      );
+  }
+
+  /* ---------------------------------------------------------
+     Individual switch control
+     --------------------------------------------------------- */
+
+  function setEffect(
+    key,
+    enabled
+  ) {
+    settings[key] =
+      !!enabled;
+
+    saveSettings();
+
+    applyVisualSettings();
+    updateSwitches();
+
+    if (
+      key ===
+      'backgroundParticles'
+    ) {
+      if (
+        settings.backgroundParticles
+      ) {
+        resizeParticles();
+        startParticleAnimation();
+      } else {
+        stopParticleAnimation();
+      }
+
+      return;
+    }
+
+    if (
+      key ===
+      'cardParticles'
+    ) {
+      if (
+        settings.cardParticles
+      ) {
+        resizeCard();
+        startCardAnimation();
+      } else {
+        stopCardAnimation();
+      }
+    }
+  }
+
+  const switches =
+    effectsPanel.querySelectorAll(
+      '.vortx-switch'
+    );
+
+  switches.forEach(button => {
+    button.addEventListener(
+      'click',
+      () => {
+        const key =
+          button.dataset.effect;
+
+        if (!key) {
+          return;
+        }
+
+        setEffect(
+          key,
+          !settings[key]
+        );
+      }
+    );
+  });
+
+  /* ---------------------------------------------------------
+     Density slider
+     --------------------------------------------------------- */
+
+  densityRange.addEventListener(
+    'input',
+    () => {
+      settings.backgroundDensity =
+        Number(
+          densityRange.value
+        );
+
+      densityValue.textContent =
+        String(
+          settings.backgroundDensity
+        );
+
+      saveSettings();
+
+      if (
+        settings.backgroundParticles
+      ) {
+        resizeParticles();
+      }
+    }
+  );
+
+  /* ---------------------------------------------------------
+     Reset settings
+     --------------------------------------------------------- */
+
+  resetButton.addEventListener(
+    'click',
+    () => {
+      settings = {
+        ...DEFAULT_SETTINGS
+      };
+
+      saveSettings();
+
+      applyVisualSettings();
+      updateSwitches();
+
+      resizeParticles();
+      resizeCard();
+
+      stopParticleAnimation();
+      stopCardAnimation();
+
+      startParticleAnimation();
+      startCardAnimation();
+    }
+  );
+
+  /* ---------------------------------------------------------
+     Settings menu open / close
+     --------------------------------------------------------- */
+
+  let settingsOpen = false;
+
+  function setSettingsOpen(
+    open
+  ) {
+    settingsOpen =
+      !!open;
+
+    effectsPanel.classList.toggle(
+      'is-open',
+      settingsOpen
+    );
+
+    settingsBtn.setAttribute(
+      'aria-expanded',
+      settingsOpen
+        ? 'true'
+        : 'false'
+    );
+
+    settingsBtn.textContent =
+      settingsOpen
+        ? '✕'
+        : '⚙️';
+
+    settingsBtn.title =
+      settingsOpen
+        ? 'Close Effects'
+        : 'Open Effects';
+  }
+
+  settingsBtn.setAttribute(
+    'aria-haspopup',
+    'true'
+  );
+
+  settingsBtn.setAttribute(
+    'aria-expanded',
+    'false'
+  );
+
+  settingsBtn.addEventListener(
+    'click',
+    event => {
+      event.stopPropagation();
+
+      setSettingsOpen(
+        !settingsOpen
+      );
+    }
+  );
+
+  document.addEventListener(
+    'click',
+    event => {
+      if (
+        settingsOpen &&
+        !effectsPanel.contains(
+          event.target
+        ) &&
+        event.target !==
+          settingsBtn
+      ) {
+        setSettingsOpen(false);
+      }
+    }
+  );
+
+  document.addEventListener(
+    'keydown',
+    event => {
+      if (
+        event.key === 'Escape' &&
+        settingsOpen
+      ) {
+        setSettingsOpen(false);
+      }
+    }
+  );
+
+  /* ---------------------------------------------------------
+     Initial settings
+     --------------------------------------------------------- */
+
+  applyVisualSettings();
+  updateSwitches();
+
+  resizeParticles();
+  resizeCard();
+
+  startParticleAnimation();
+  startCardAnimation();
+
+  /* ---------------------------------------------------------
+     Mouse interaction
+     --------------------------------------------------------- */
+
+  if (
+    window.matchMedia(
+      '(pointer:fine)'
+    ).matches
+  ) {
+    window.addEventListener(
+      'pointermove',
+      event => {
+        mouse.x =
+          event.clientX;
+
+        mouse.y =
+          event.clientY;
+
+        mouse.active =
+          true;
+      },
+      {
+        passive: true
+      }
+    );
+
+    window.addEventListener(
+      'pointerleave',
+      () => {
+        mouse.active =
+          false;
+      },
+      {
+        passive: true
+      }
+    );
+  }
+
+  /* ---------------------------------------------------------
+     Robot
+     --------------------------------------------------------- */
+
+  const robot =
+    document.querySelector(
+      '#vortx-robot'
+    );
+
+  const compact =
+    window.matchMedia(
+      '(max-width:600px)'
+    ).matches;
+
+  let robotX =
+    compact
+      ? Math.max(
+          0,
+          window.innerWidth - 66
+        )
+      : Math.max(
+          10,
+          window.innerWidth - 86
+        );
+
+  let robotY =
+    compact
+      ? 6
+      : Math.max(
+          80,
+          window.innerHeight - 100
+        );
+
+  let drag = null;
+
+  function clampRobot() {
+    if (!robot) {
+      return;
+    }
+
+    const rect =
+      robot.getBoundingClientRect();
+
+    robotX =
+      Math.min(
+        Math.max(0, robotX),
+        Math.max(
+          0,
+          window.innerWidth -
+            rect.width
+        )
+      );
+
+    robotY =
+      Math.min(
+        Math.max(0, robotY),
+        Math.max(
+          0,
+          window.innerHeight -
+            rect.height
+        )
+      );
+
+    robot.style.left =
+      `${robotX}px`;
+
+    robot.style.top =
+      `${robotY}px`;
+  }
+
+  if (robot) {
+    clampRobot();
+
+    robot.addEventListener(
+      'pointerdown',
+      event => {
+        if (
+          event.button !==
+            undefined &&
+          event.button !== 0
+        ) {
+          return;
+        }
+
+        const rect =
+          robot.getBoundingClientRect();
+
+        drag = {
+          id:
+            event.pointerId,
+
+          offsetX:
+            event.clientX -
+            rect.left,
+
+          offsetY:
+            event.clientY -
+            rect.top
+        };
+
+        robot.setPointerCapture(
+          event.pointerId
+        );
+
+        robot.classList.add(
+          'is-dragging'
+        );
+
+        event.preventDefault();
+      }
+    );
+
+    robot.addEventListener(
+      'pointermove',
+      event => {
+        if (
+          !drag ||
+          drag.id !==
+            event.pointerId
+        ) {
+          return;
+        }
+
+        robotX =
+          event.clientX -
+          drag.offsetX;
+
+        robotY =
+          event.clientY -
+          drag.offsetY;
+
+        clampRobot();
+
+        event.preventDefault();
+      }
+    );
+
+    function endDrag(event) {
+      if (
+        !drag ||
+        drag.id !==
+          event.pointerId
+      ) {
+        return;
+      }
+
+      if (
+        robot.hasPointerCapture(
+          event.pointerId
+        )
+      ) {
+        robot.releasePointerCapture(
+          event.pointerId
+        );
+      }
+
+      drag = null;
+
+      robot.classList.remove(
+        'is-dragging'
+      );
+    }
+
+    robot.addEventListener(
+      'pointerup',
+      endDrag
+    );
+
+    robot.addEventListener(
+      'pointercancel',
+      endDrag
+    );
+
+    robot.addEventListener(
+      'keydown',
+      event => {
+        const step =
+          event.shiftKey
+            ? 24
+            : 12;
+
+        if (
+          event.key ===
+          'ArrowLeft'
+        ) {
+          robotX -= step;
+        } else if (
+          event.key ===
+          'ArrowRight'
+        ) {
+          robotX += step;
+        } else if (
+          event.key ===
+          'ArrowUp'
+        ) {
+          robotY -= step;
+        } else if (
+          event.key ===
+          'ArrowDown'
+        ) {
+          robotY += step;
+        } else {
+          return;
+        }
+
+        event.preventDefault();
+
+        clampRobot();
+      }
+    );
+  }
+
+  /* ---------------------------------------------------------
+     Resize
+     --------------------------------------------------------- */
+
+  window.addEventListener(
+    'resize',
+    () => {
+      resizeParticles();
+      resizeCard();
+      clampRobot();
+    },
+    {
+      passive: true
+    }
+  );
+
+  /* ---------------------------------------------------------
+     WhatsApp
+     --------------------------------------------------------- */
+
+  const whatsapp =
+    document.querySelector(
+      '#whatsapp-group'
+    );
+
+  if (whatsapp) {
+    if (
+      /^https?:\/\//.test(
+        WHATSAPP_GROUP_URL
+      )
+    ) {
+      whatsapp.href =
+        WHATSAPP_GROUP_URL;
+    } else {
+      whatsapp.addEventListener(
+        'click',
+        event => {
+          event.preventDefault();
+
+          const status =
+            document.querySelector(
+              '#visitor-status'
+            );
+
+          if (status) {
+            status.textContent =
+              'WhatsApp group link coming soon';
+          }
+        }
+      );
+    }
+  }
+
+  /* ---------------------------------------------------------
+     Visitor counter
+     --------------------------------------------------------- */
+
+  async function visitors() {
+    const count =
+      document.querySelector(
+        '#visitor-count'
+      );
+
+    const status =
+      document.querySelector(
+        '#visitor-status'
+      );
+
+    if (
+      !count ||
+      !status
+    ) {
+      return;
+    }
+
+    const key =
+      'vortx-visitor-count';
+
+    let saved = null;
+
+    try {
+      saved =
+        localStorage.getItem(
+          key
+        );
+    } catch {
+      saved = null;
+    }
+
+    if (saved) {
+      count.textContent =
+        saved;
+    }
+
+    try {
+      const response =
+        await fetch(
+          counterEndpoint,
+          {
+            signal:
+              AbortSignal.timeout(
+                5000
+              )
+          }
+        );
+
+      if (!response.ok) {
+        throw new Error(
+          'Counter request failed'
+        );
+      }
+
+      const data =
+        await response.json();
+
+      const total =
+        data.count ??
+        data.value;
+
+      if (
+        !Number.isFinite(
+          total
+        )
+      ) {
+        throw new Error(
+          'Invalid counter value'
+        );
+      }
+
+      const result =
+        new Intl.NumberFormat()
+          .format(total);
+
+      count.textContent =
+        result;
+
+      try {
+        localStorage.setItem(
+          key,
+          result
+        );
+      } catch {
+        /* Ignore storage failure */
+      }
+    } catch {
+      if (!saved) {
+        count.textContent =
+          '—';
+      }
+
+      status.textContent =
+        saved
+          ? 'Showing last saved count'
+          : 'Stay Connected !';
+    }
+  }
+
+  visitors();
+
+  /* ---------------------------------------------------------
+     Click flash
+     --------------------------------------------------------- */
+
+  document.addEventListener(
+    'click',
+    event => {
+      if (
+        event.target.closest(
+          'a,#vortx-robot,#settings-toggle,#vortx-effects-panel'
+        )
+      ) {
+        return;
+      }
+
+      if (!flash) {
+        return;
+      }
+
+      flash.style.setProperty(
+        '--flash-x',
+        `${event.clientX}px`
+      );
+
+      flash.style.setProperty(
+        '--flash-y',
+        `${event.clientY}px`
+      );
+
+      flash.style.opacity =
+        '1';
+
+      window.setTimeout(
+        () => {
+          flash.style.opacity =
+            '0';
+        },
+        130
+      );
+    }
+  );
+
+})();
+</script>
 </body>
 </html>
